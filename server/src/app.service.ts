@@ -1,7 +1,7 @@
 import { NewGameResonse } from './types/new-game-resp';
 import { PlayerType } from './types/players';
 import { Game, Games, GameStatus } from './types/games';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException} from '@nestjs/common';
 import {v4 as uuid} from 'uuid';
 
 
@@ -39,24 +39,23 @@ export class GameService {
 
   gamesList(all: boolean): Game[] {
     let result: Game[] = [];
-    if(all) {
-      for(let key in this.games) { 
-        result.push(this.games[key])
-      }
-      return result
-    }
+
     for(let key in this.games) {
       const playar = this.games[key]
-      if(!playar.players.x || !playar.players.o) {
+      if(all) {
+        result.push(this.games[key])
+      }else if(!playar.players.x || !playar.players.o) {
         result.push(this.games[key])
       }
     }
     return result
   }
 
-  game(id): Game {
-    for(let key in this.games) {
-      if(key === id) return this.games[key];
+  getGame(id: string): Game {
+    if(this.games[id]) {
+      return this.games[id];
+    } else {
+      throw new NotFoundException('Not Found', 'Такой игры не существует')
     }
   }
 }
