@@ -37,50 +37,26 @@ export class GameService {
 
   }
 
-  gamesList(body): Array<object> | object {
-    if(body.id) {
-      for(let key in this.games) {
-        if(key === body.id) return this.games[key];
+  gamesList(all: boolean): Game[] {
+    let result: Game[] = [];
+    if(all) {
+      for(let key in this.games) { 
+        result.push(this.games[key])
       }
-      return this.games;
-    } else if(body.all) {
-        return this.games
-    } else {
-      let rezult: Array<object> = [];
-      for(let key in this.games) {
-        let count:number = 0
-        const playar = this.games[key]
-        for(let a in playar.players) {
-          count++ 
-        }
-        if(count < 2) {
-          rezult.push(playar);
-        }
+      return result
+    }
+    for(let key in this.games) {
+      const playar = this.games[key]
+      if(!playar.players.x || !playar.players.o) {
+        result.push(this.games[key])
       }
-      return rezult
+    }
+    return result
+  }
+
+  game(id): Game {
+    for(let key in this.games) {
+      if(key === id) return this.games[key];
     }
   }
-
-  getHello(): string {
-    return `Hello World`;
-  }
 }
-
-
-
-
-// структура игры
-// {
-//   "uuid": {
-//     uuid: ...
-//     map: ['x', 'o'],
-//     players: {
-//       x: {
-//         simbol: 'x'
-//       }
-//       o:
-//     },
-//     state: '',
-//     winer: null
-//   }
-// }

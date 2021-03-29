@@ -1,27 +1,26 @@
-//import { Games } from './types/games';
+
 import { NewGameResonse } from './types/new-game-resp';
-import { Controller, Get, Post, Body} from '@nestjs/common';
+import { Games, Game } from './types/games';
+import { Controller, Get, Post, Param, GatewayTimeoutException, Query} from '@nestjs/common';
 import { GameService } from './app.service';
 
-type GamesDTO = {
-    id?: string,
-    all?: string
-  }
+type GameDTO = {
+  id?: string,
+}
 
 @Controller()
 export class AppController {
   constructor(private readonly gameService: GameService) {}
 
-  @Get()
-  getHello(): string {
-    return this.gameService.getHello();
+  @Get('/games')
+  gamesList(@Query() {all}: {all: boolean}): Game[] {
+    return this.gameService.gamesList(all);
   }
 
-  
 
-  @Post('/games')
-  gamesList(@Body() body?: GamesDTO ): Array<object> | object {
-    return this.gameService.gamesList(body);
+  @Get('/games/:id')
+  game(@Param('id') id: GameDTO): Game {
+    return this.gameService.game(id);
   }
 
   @Post('/game')
@@ -29,8 +28,4 @@ export class AppController {
 
     return this.gameService.createGame();
   }
-
-  
-
-
 }
