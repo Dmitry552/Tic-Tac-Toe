@@ -43,6 +43,7 @@ export class GameService {
     for(let key in this.games) {
       const playar = this.games[key]
       if(all || (!playar.players.x || !playar.players.o)) result.push(this.games[key])
+
     }
     return result
   }
