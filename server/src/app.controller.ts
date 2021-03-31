@@ -1,13 +1,21 @@
 
 import { NewGameResonse } from './types/new-game-resp';
 import { Game } from './types/games';
-import { Controller, Get, Post, Param, GatewayTimeoutException, Query} from '@nestjs/common';
+import { Controller, Get, Post, Param, Query} from '@nestjs/common';
 import { GameService } from './app.service';
 
 
 @Controller()
 export class AppController {
   constructor(private readonly gameService: GameService) {}
+
+  @Get('/')
+  get(): object {
+    let a = {
+      b: "Hello"
+    }
+    return a;
+  }
 
   @Get('/games')
   gamesList(@Query() {all}: {all: boolean}): Game[] {
@@ -23,7 +31,7 @@ export class AppController {
 
   @Post('/game')
   createGames(): NewGameResonse {
-
+    console.log('Hello')
     return this.gameService.createGame();
   }
 }

@@ -13,9 +13,9 @@ export interface Game {
 }
 
 export enum GameStatus {
-  new_game = 'new_game',
-  playerX = 'player_X',
-  playerY = 'playqr_y',
-  draw = 'draw',
-  win = "win"
+  new_game = 'Игра начата',
+  playerX = 'Ходит Х',
+  playerO = 'Ходит О',
+  draw = 'Отрисовка',
+  win = "Победа"
 }
