@@ -1,0 +1,28 @@
+@import '../../utils/variables.scss';
+
+.zero {
+  width: 100%;
+  height: 100%;
+  .zero_component {
+    position: relative;
+    .external {
+      border-radius: 50%;
+      width: 51px;
+      height: 51px;
+      background-color: red;
+      top: 5px;
+      left: 5px;
+      position: absolute;
+    }
+    .internal {
+      border-radius: 50%;
+      width: 39px;
+      height: 39px;
+      background-color: $backgraundColor;
+      top: 11px;
+      left: 11px;
+      position: absolute;
+    }
+  }
+  
+}

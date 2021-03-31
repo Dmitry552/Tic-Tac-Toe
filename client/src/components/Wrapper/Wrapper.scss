@@ -1,0 +1,22 @@
+
+.wrapper{
+  max-width: 1080px;
+  margin: 0 auto;
+  //height: 100vh;
+  .conteiner{
+    max-width: 1080px;
+    margin: 0 auto;
+    background-color: aliceblue;
+    box-shadow: 0 0 17px 0 #b5b5b5;
+    padding: 0 15px 25px 15px;
+    min-height: 100vh;
+    img {
+      margin: 0 auto;
+      height: 200px;
+      padding-top: 40px;
+    }
+    .field {
+      width: 100%;
+    }
+  }
+}
