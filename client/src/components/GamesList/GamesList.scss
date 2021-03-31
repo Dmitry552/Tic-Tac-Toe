@@ -1,3 +1,5 @@
+@import '../../utils/variables.scss';
+
 .game_list {
   margin-top: 15px;
   .button_block {
@@ -7,19 +9,19 @@
     button {
       height: 35px;
       background: none;
-      border: 1px solid #cccccc;
+      border: 1px solid $Shadow;
       border-radius: 6px;
-      color: #1f1f1f;
+      color: $ColorText;
       transition-duration: 0.2s;
     }
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 3px 0px #757575;
+      box-shadow: 0 0 3px 0px $Shadow;
       cursor: pointer;
     }
   }
   h1 {
     text-align: center;
-    color: #ff3535;
+    color: $Allert;
   }
 }

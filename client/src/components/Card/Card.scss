@@ -1,6 +1,7 @@
+@import '../../utils/variables.scss';
 .card {
   margin-bottom: 5px;
-  color: #2b2b2b;
+  color: $ColorText;
   .card_conteiner {
     display: flex;
     justify-content: space-between;
@@ -9,7 +10,7 @@
     margin: 0 auto;
     padding: 0 15px;
     height: 40px;
-    box-shadow: 0px 0px 20px 0px #c1c1c1;
+    box-shadow: 0px 0px 20px 0px $Shadow;
     border-radius: 10px;
     transition-duration: 0.2s;
     .state_game {
@@ -21,7 +22,7 @@
         border: none;
         cursor: pointer;
         width: 220px;
-        border-left: 1px solid #a2a2a2;
+        border-left: 1px solid $Shadow;
       }
     }
   }

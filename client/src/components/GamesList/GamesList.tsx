@@ -14,7 +14,6 @@ export const GamesList = (props: Props): JSX.Element => {
   useEffect(() => {
     Http<Array<Game>>('http://localhost:8000/games').then(resolve => setGames(resolve));
   }, [])
-  console.log('games', games)
   
   return (
     <div className="game_list">
@@ -25,7 +24,6 @@ export const GamesList = (props: Props): JSX.Element => {
       </div>
       <div className="game-list">
         {games ? games.map(e => {
-          console.log('e', e)
           return (
             <Card 
               heandlerEnterTheGame = {heandlerEnterTheGame}

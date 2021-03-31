@@ -22,8 +22,6 @@ export const Wrapper = (): JSX.Element => {
     setGame(game)
   }
 
-  console.log('game', game)
-
   return (
     <div className="wrapper">
       <div className="conteiner">

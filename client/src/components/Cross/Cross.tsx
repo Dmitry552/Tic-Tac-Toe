@@ -1,4 +1,4 @@
-//import Raect from 'react';
+
 import './Cross.scss';
 
 export const Cross = () => {

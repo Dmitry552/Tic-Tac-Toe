@@ -7,7 +7,6 @@ import {PlayingFieldProps} from './PlayingField.type';
 
 export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const {game} = props
-  console.log('game', game)
 
   return (
   <div className="playing_field">
