@@ -9,14 +9,6 @@ import { GameService } from './app.service';
 export class AppController {
   constructor(private readonly gameService: GameService) {}
 
-  @Get('/')
-  get(): object {
-    let a = {
-      b: "Hello"
-    }
-    return a;
-  }
-
   @Get('/games')
   gamesList(@Query() {all}: {all: boolean}): Game[] {
     return this.gameService.gamesList(all);
@@ -31,7 +23,6 @@ export class AppController {
 
   @Post('/game')
   createGames(): NewGameResonse {
-    console.log('Hello')
     return this.gameService.createGame();
   }
 }

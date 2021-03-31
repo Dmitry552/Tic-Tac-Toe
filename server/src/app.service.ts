@@ -52,7 +52,7 @@ export class GameService {
     if(this.games[id]) {
       return this.games[id];
     } else {
-      throw new NotFoundException('Not Found', 'Такой игры не существует')
+      throw new NotFoundException('Not Found', 'There is no such game')
     }
   }
 }
