@@ -1,0 +1,33 @@
+@import '../../utils/variables.scss';
+.card {
+  margin-bottom: 5px;
+  color: $ColorText;
+  .card_conteiner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 15px;
+    height: 40px;
+    box-shadow: 0px 0px 20px 0px $Shadow;
+    border-radius: 10px;
+    transition-duration: 0.2s;
+    .state_game {
+      margin-left: 35px;
+    }
+    .button {
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: 220px;
+        border-left: 1px solid $Shadow;
+      }
+    }
+  }
+  .card_conteiner:hover {
+    transform: translateY(-2px);
+  }
+
+}

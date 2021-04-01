@@ -1,0 +1,27 @@
+@import '../../utils/variables.scss';
+
+.game_list {
+  margin-top: 15px;
+  .button_block {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    button {
+      height: 35px;
+      background: none;
+      border: 1px solid $Shadow;
+      border-radius: 6px;
+      color: $ColorText;
+      transition-duration: 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 3px 0px $Shadow;
+      cursor: pointer;
+    }
+  }
+  h1 {
+    text-align: center;
+    color: $Allert;
+  }
+}

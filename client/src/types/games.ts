@@ -17,5 +17,5 @@ export enum GameStatus {
   playerX = 'player_x',
   playerO = 'player_o',
   draw = 'draw',
-  win = "win"
+  win = 'win'
 }

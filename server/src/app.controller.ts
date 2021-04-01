@@ -1,7 +1,7 @@
 
 import { NewGameResonse } from './types/new-game-resp';
 import { Game } from './types/games';
-import { Controller, Get, Post, Param, GatewayTimeoutException, Query} from '@nestjs/common';
+import { Controller, Get, Post, Param, Query} from '@nestjs/common';
 import { GameService } from './app.service';
 
 
@@ -23,7 +23,6 @@ export class AppController {
 
   @Post('/game')
   createGames(): NewGameResonse {
-
     return this.gameService.createGame();
   }
 }
