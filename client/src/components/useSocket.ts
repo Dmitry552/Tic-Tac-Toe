@@ -25,7 +25,7 @@ export const useSocket = (onConnect: Function  = () => undefined, onDisconnected
     return  () => {
       socket?.disconnect()
     }
-  }, []);
+  });
   
   return {
       socket: getSocket()

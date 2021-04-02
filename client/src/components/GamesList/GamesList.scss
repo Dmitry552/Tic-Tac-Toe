@@ -1,7 +1,6 @@
 @import '../../utils/variables.scss';
 
 .game_list {
-  margin-top: 15px;
   .button_block {
     display: flex;
     justify-content: center;
@@ -20,6 +19,7 @@
       cursor: pointer;
     }
   }
+  margin-top: 15px;
   h1 {
     text-align: center;
     color: $Allert;

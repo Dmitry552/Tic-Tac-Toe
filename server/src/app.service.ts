@@ -49,9 +49,9 @@ export class GameService {
   }
 
   getGame(id: string): Game {
-    if(this.games[id]) {
-      return this.games[id];
-    } else {
+      if(this.games[id]) {
+        return this.games[id];
+      } else {
       throw new NotFoundException('Not Found', 'There is no such game')
     }
   }

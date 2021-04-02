@@ -1,23 +1,12 @@
 @import '../../utils/variables.scss';
 
 .playing_field {
-  max-width: 500px;
+  max-width: 250px;
   margin: 0 auto;
   margin-top: 100px;
   .field {
-    .rank {
-      display: flex;
-      justify-content: center;
-      .column {
-        height: 60px;
-        width: 60px;
-        border: 1px solid $Shadow;
-        margin: 4px;
-        border-radius: 8px;
-        background-color: $BackgraundCard;
-        box-shadow: 0 0 4px 0px $Shadow;
-        cursor: pointer;
-      }
-    }
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 }

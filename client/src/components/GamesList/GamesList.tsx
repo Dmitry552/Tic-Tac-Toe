@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Http from '../modulHttp';
 import {Card} from '../Card/Card';
 import './GamesList.scss';
@@ -18,7 +18,7 @@ export const GamesList = (props: Props): JSX.Element => {
   return (
     <div className="game_list">
       <div className="button_block">
-        <Link to='/game/play'>
+        <Link to="/game/play">
           <button type='button' onClick={()=>heandlerNewGame()}>Создать новую игру</button>
         </Link>
       </div>
