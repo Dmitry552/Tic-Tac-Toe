@@ -1,6 +1,6 @@
 import { Game } from './games';
 import { Player } from './players';
-export class NewGameResonse {
+export type NewGameResonse = {
   player: Player
   game: Game
 }

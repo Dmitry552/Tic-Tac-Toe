@@ -15,6 +15,7 @@ const STATUSES: StatusText = {
 export const Card = (props: CardPropsType): JSX.Element => {
 
   const {heandlerEnterTheGame, game} = props
+  console.log('_game', game)
 
   return (
     <div className="card">
