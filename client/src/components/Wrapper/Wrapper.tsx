@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {useSocket} from '../useSocket';
 import img from './unnamed-min.jpg';
 import './Wrapper.scss';
 
@@ -20,7 +21,7 @@ export const Wrapper = (): JSX.Element => {
 
   function _heandlerEnterTheGame(game: Game): void {
     setGame(game)
-  }
+  } 
 
   return (
     <div className="wrapper">

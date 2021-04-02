@@ -1,5 +1,6 @@
 import React from 'react';
 import {Cross} from '../Cross/Cross';
+import { useSocket } from '../useSocket';
 import {Zero} from '../Zero/Zero';
 import './PlayingField.scss';
 import {PlayingFieldProps} from './PlayingField.type';
@@ -7,6 +8,10 @@ import {PlayingFieldProps} from './PlayingField.type';
 
 export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const {game} = props
+
+  const { socket } = useSocket();
+
+
 
   return (
   <div className="playing_field">
