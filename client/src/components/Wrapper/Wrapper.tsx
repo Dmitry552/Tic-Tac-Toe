@@ -1,7 +1,6 @@
-import React, {useState, useEffect, useRef, LegacyRef} from 'react';
-//import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
-import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
-//import {createBrowserHistory} from 'history';
+import {useState, useEffect} from 'react';
+import { Router, Switch, Route, Redirect } from 'react-router-dom';
+import history from '../history';
 
 import img from './unnamed-min.jpg';
 import './Wrapper.scss';
@@ -15,35 +14,33 @@ import Http from '../modulHttp';
 import {GamesList} from '../GamesList/GamesList';
 import {PlayingField} from '../PlayingField/PlayingField';
 
-//const history = createBrowserHistory();
+let key: boolean = true;
 
 export const Wrapper = (): JSX.Element => {
   const [game, setGame] = useState<Game>()
   const [player, setPlayer] = useState<Player>()
-  const routerRef = useRef() as LegacyRef<Router>;
-
+  
   function _heandlerEnterTheGame(game: Game): void {
     setGame(game)
   } 
 
-  //const history = ():History  => (routerRef as any)['current']['history'];
-
   function _heandlerNewGame(): void {
-    //debugger
     Http<GameResonse>('http://localhost:8000/game', 'post').then(resolve => {
       setGame(resolve.game); 
       setPlayer(resolve.player);
-      localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol)
+      localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol);
+      history.push('/game/play');
     });
   }
-
+  
   useEffect(() => {
     let player_ = localStorage.getItem('player')
     if(player_) {
       Http<Game>(`http://localhost:8000/games/${player_.split('_')[0]}`).then(resolve => {
         setGame(resolve);
-        //history.
-        //history().push('/game/play')
+        if(key) {
+          history.push('/game/play');
+        }
       }).catch(err => {
         localStorage.removeItem('player')
       });
@@ -57,9 +54,7 @@ export const Wrapper = (): JSX.Element => {
       <div className="conteiner">
         <img src={img} alt="Крестики нолики"/>
         <div className="field">
-
-          {/* <Router ref={routerRef} > */}
-          <Router>
+          <Router history={history}>
             <>
               <Switch>
                 <Route path='/' exact>
@@ -78,4 +73,4 @@ export const Wrapper = (): JSX.Element => {
       </div>
     </div>
   )
-}
+};

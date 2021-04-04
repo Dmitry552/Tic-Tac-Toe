@@ -1,14 +1,15 @@
-//import React from 'react';
+
 import { useSocket } from '../useSocket';
 import {Cell} from '../Cell/Cell';
 import './PlayingField.scss';
 import {PlayingFieldProps} from './PlayingField.type';
+import history from '../history';
 
 
 export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const { game, player } = props
-   const { socket } = useSocket();
-
+  const { socket } = useSocket();
+  !game && history.push('/');
 
   return (
   <div className="playing_field">

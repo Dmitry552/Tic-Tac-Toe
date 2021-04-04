@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import {useState, useEffect} from 'react';
 import Http from '../modulHttp';
 import {Card} from '../Card/Card';
 import './GamesList.scss';
@@ -18,9 +17,7 @@ export const GamesList = (props: Props): JSX.Element => {
   return (
     <div className="game_list">
       <div className="button_block">
-        <Link to="/game/play">
-          <button type='button' onClick={()=>heandlerNewGame()}>Создать новую игру</button>
-        </Link>
+        <button type='button' onClick={()=>heandlerNewGame()}>Создать новую игру</button>
       </div>
       <div className="game-list">
         {games ? games.map(e => {
