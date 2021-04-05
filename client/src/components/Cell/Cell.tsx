@@ -18,7 +18,7 @@ export const Cell = (props: Props): JSX.Element => {
 
   return (
     <div className="cell">
-      <div className="cell_component">
+      <div className="cell_component" data-index={index}>
         {Icon(value)}
       </div>
     </div>
