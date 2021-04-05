@@ -5,7 +5,8 @@ import {Props} from './CellProps.type';
 import './Cell.scss';
 
 export const Cell = (props: Props): JSX.Element => {
-  const {value} = props
+  const {value, index} = props
+  console.log('key', index)
 
   function Icon(index: string): JSX.Element | undefined{
     if(value === 'x') {

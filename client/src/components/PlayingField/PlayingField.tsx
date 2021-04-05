@@ -10,7 +10,6 @@ import history from '../history';
 export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const { game, player } = props
   const [token, setToken] = useState<Player | undefined>(player)
-  const [cell, getCell] = useState<number>(0)
   const { socket } = useSocket();
   !game && history.push('/');
 
@@ -21,15 +20,15 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   }, [])
   token && localStorage.setItem('player', game?.uuid + '_' + token.symbol);
 
-  function _handlerClick(e: any): void {
-    console.log(e)
-  }
+  // function _handlerClick(e: any): void {
+  //   console.log(e)
+  // }
 
   return (
   <div className="playing_field">
     <div className="field" >
       {game?.map.map((e, index)=>{
-        return <Cell key={index} value={e}/>
+        return <Cell key={index} value={e} index={index}/>
       })}
     </div>
   </div>
