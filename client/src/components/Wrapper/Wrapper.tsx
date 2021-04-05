@@ -14,14 +14,15 @@ import Http from '../modulHttp';
 import {GamesList} from '../GamesList/GamesList';
 import {PlayingField} from '../PlayingField/PlayingField';
 
-let key: boolean = true;
+let firstVisit: boolean = true;
 
 export const Wrapper = (): JSX.Element => {
   const [game, setGame] = useState<Game>()
   const [player, setPlayer] = useState<Player>()
   
   function _heandlerEnterTheGame(game: Game): void {
-    setGame(game)
+    setGame(game);
+    history.push('/game/play');
   } 
 
   function _heandlerNewGame(): void {
@@ -34,13 +35,11 @@ export const Wrapper = (): JSX.Element => {
   }
   
   useEffect(() => {
-    let player_ = localStorage.getItem('player')
-    if(player_) {
-      Http<Game>(`http://localhost:8000/games/${player_.split('_')[0]}`).then(resolve => {
+    let token = localStorage.getItem('player')
+    if(token) {
+      Http<Game>(`http://localhost:8000/games/${token.split('_')[0]}`).then(resolve => {
         setGame(resolve);
-        if(key) {
-          history.push('/game/play');
-        }
+        if(firstVisit) history.push('/game/play');
       }).catch(err => {
         localStorage.removeItem('player')
       });

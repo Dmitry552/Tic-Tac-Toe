@@ -1,5 +1,4 @@
 
-import {Link} from 'react-router-dom'
 import {CardPropsType, StatusText} from './CardProps.type';
 import './Card.scss';
 
@@ -24,9 +23,7 @@ export const Card = (props: CardPropsType): JSX.Element => {
           <p>Статус игры: {STATUSES[game.state]}</p>
         </div>
         <div className="button">
-          <Link to='/game/play'>
-            <button type="button" onClick={() => heandlerEnterTheGame(game)}>Добавится к игре</button>
-          </Link>
+          <button type="button" onClick={() => heandlerEnterTheGame(game)}>Добавится к игре</button>
         </div>
       </div>
     </div>
