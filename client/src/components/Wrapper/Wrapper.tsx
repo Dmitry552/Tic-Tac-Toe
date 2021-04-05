@@ -21,8 +21,14 @@ export const Wrapper = (): JSX.Element => {
   const [player, setPlayer] = useState<Player>()
   
   function _heandlerEnterTheGame(game: Game): void {
-    setGame(game);
-    history.push('/game/play');
+    Http<GameResonse>(`http://localhost:8000/games/${game.uuid}`).then(resolve => {
+        setGame(resolve.game);
+        setPlayer(resolve.player);
+        localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol);
+        history.push('/game/play');
+      }).catch(err => {
+        localStorage.removeItem('player')
+      });
   } 
 
   function _heandlerNewGame(): void {
@@ -37,8 +43,9 @@ export const Wrapper = (): JSX.Element => {
   useEffect(() => {
     let token = localStorage.getItem('player')
     if(token) {
-      Http<Game>(`http://localhost:8000/games/${token.split('_')[0]}`).then(resolve => {
-        setGame(resolve);
+      Http<GameResonse>(`http://localhost:8000/games/${token.split('_')[0]}?side=${token.split('_')[1]}`).then(resolve => {
+        setGame(resolve.game); 
+        setPlayer(resolve.player);
         if(firstVisit) history.push('/game/play');
       }).catch(err => {
         localStorage.removeItem('player')

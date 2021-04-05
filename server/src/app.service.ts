@@ -48,11 +48,39 @@ export class GameService {
     return result
   }
 
-  getGame(id: string): Game {
+  getGame(id: string, side: string): NewGameResonse {
+    let game: Game;
       if(this.games[id]) {
-        return this.games[id];
+        game = this.games[id]
       } else {
       throw new NotFoundException('Not Found', 'There is no such game')
     }
+    if(!side) {
+      let playerType = game.players.o ? PlayerType.X : PlayerType.O;
+      if(game.players.o) {
+        game.players.x = {
+          symbol: playerType
+        }
+      } else {
+        game.players.o = {
+          symbol: playerType
+        }
+      }
+      return {
+        player: {
+          symbol: playerType
+        },
+        game
+      }
+    } else {
+      return {
+        player: {
+          symbol: side === 'x' ? PlayerType.X : PlayerType.O
+        },
+        game
+      }
+    }
+    
+    
   }
 }

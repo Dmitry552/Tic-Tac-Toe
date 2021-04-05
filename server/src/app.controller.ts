@@ -16,9 +16,9 @@ export class AppController {
 
 
   @Get('/games/:id')
-  getGame(@Param('id') id: string): Game {
+  getGame(@Query() {side}: {side: string}, @Param('id') id: string): NewGameResonse {
 
-    return this.gameService.getGame(id);
+    return this.gameService.getGame(id, side);
   }
 
   @Post('/game')
