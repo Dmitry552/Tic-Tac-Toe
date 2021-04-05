@@ -11,6 +11,8 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const { game, player } = props
   const [token, setToken] = useState<Player | undefined>(player)
   const { socket } = useSocket();
+  console.log('game', game)
+  console.log('player', player)
   !game && history.push('/');
 
   useEffect(()=> {
