@@ -10,20 +10,26 @@ import history from '../history';
 export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const { game, player } = props
   const [token, setToken] = useState<Player | undefined>(player)
+  const [cell, getCell] = useState<number>(0)
   const { socket } = useSocket();
   !game && history.push('/');
 
   useEffect(()=> {
     if(!token) {
       game?.players.o ? setToken({symbol: PlayerType.X}) : setToken({symbol: PlayerType.O});
-    } else localStorage.setItem('player', game?.uuid + '_' + token.symbol);
-  }, [token])
+    }
+  }, [])
+  token && localStorage.setItem('player', game?.uuid + '_' + token.symbol);
+
+  function _handlerClick(e: any): void {
+    console.log(e)
+  }
 
   return (
   <div className="playing_field">
-    <div className="field">
-      {game?.map.map((e, key)=>{
-        return <Cell key={key} index={e}/>
+    <div className="field" >
+      {game?.map.map((e, index)=>{
+        return <Cell key={index} value={e}/>
       })}
     </div>
   </div>

@@ -5,12 +5,12 @@ import {Props} from './CellProps.type';
 import './Cell.scss';
 
 export const Cell = (props: Props): JSX.Element => {
-  const {index} = props
+  const {value} = props
 
   function Icon(index: string): JSX.Element | undefined{
-    if(index === 'x') {
+    if(value === 'x') {
       return <Cross/>
-    } else if(index === 'o') {
+    } else if(value === 'o') {
       return <Zero/>
     } else {return undefined}
   }
@@ -18,7 +18,7 @@ export const Cell = (props: Props): JSX.Element => {
   return (
     <div className="cell">
       <div className="cell_component">
-        {Icon(index)}
+        {Icon(value)}
       </div>
     </div>
   )
