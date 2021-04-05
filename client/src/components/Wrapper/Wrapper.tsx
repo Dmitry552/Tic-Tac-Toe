@@ -6,7 +6,7 @@ import img from './unnamed-min.jpg';
 import './Wrapper.scss';
 
 import {Game} from '../../types/games';
-import {Player} from '../../types/players';
+import {Player, PlayerType} from '../../types/players';
 import {GameResonse} from '../../types/new-game-resp';
 
 import Http from '../modulHttp';
@@ -19,15 +19,14 @@ let firstVisit: boolean = true;
 export const Wrapper = (): JSX.Element => {
   const [game, setGame] = useState<Game>()
   const [player, setPlayer] = useState<Player>()
+  const [token, setToken] = useState(localStorage.getItem('player')?.split('_'));
   
   function _heandlerEnterTheGame(game: Game): void {
     Http<GameResonse>(`http://localhost:8000/games/${game.uuid}`, 'post').then(resolve => {
-        setGame(resolve.game);
-        setPlayer(resolve.player);
-        localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol);
-        history.push('/game/play');
-      }).catch(err => {
-        localStorage.removeItem('player')
+      setGame(resolve.game);
+      setPlayer(resolve.player);
+      localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol);
+      history.push('/game/play');
       });
   } 
 
@@ -41,12 +40,16 @@ export const Wrapper = (): JSX.Element => {
   }
   
   useEffect(() => {
-    let token = localStorage.getItem('player')
     if(token) {
-      Http<GameResonse>(`http://localhost:8000/games/${token.split('_')[0]}?side=${token.split('_')[1]}`, 'post').then(resolve => {
-        setGame(resolve.game); 
-        setPlayer(resolve.player);
-        if(firstVisit) history.push('/game/play');
+      Http<Game>(`http://localhost:8000/games/${token[0]}`).then(resolve => {
+        setGame(resolve); 
+        setPlayer({
+          symbol: token[1] === 'x' ? PlayerType.X : PlayerType.O
+        });
+        if(firstVisit) {
+          history.push('/game/play')
+        };
+        firstVisit = false;
       }).catch(err => {
         localStorage.removeItem('player')
       });

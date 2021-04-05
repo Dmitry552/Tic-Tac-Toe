@@ -56,12 +56,10 @@ export class GameService {
     }
   }
 
-  enterTheGame(id: string, side: string): NewGameResonse {
-    let game: Game;
+  enterTheGame(id: string): NewGameResonse {
+    let game: Game = this.games[id];
 
-    if(this.games[id]) {
-      game = this.games[id]
-    } else {
+    if(!game) {
       throw new NotFoundException('Not Found', 'There is no such game')
     }
     
@@ -79,14 +77,7 @@ export class GameService {
         },
         game
       }
-    }  else if(side){
-      return {
-        player: {
-          symbol: side === 'x' ? PlayerType.X : PlayerType.O
-        },
-        game
-      }
-    } else {
+    }  else {
       throw new Error('The game is not available')
     }
   }
