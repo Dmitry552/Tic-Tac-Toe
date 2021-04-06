@@ -2,32 +2,46 @@
 import { useSocket } from '../useSocket';
 import {Cell} from '../Cell/Cell';
 import './PlayingField.scss';
-import {PlayingFieldProps} from './PlayingField.type';
+import {PlayingFieldProps, MoveRequest, MoveResponse} from './PlayingField.type';
 import history from '../history';
-import React from 'react';
+import { useState } from 'react';
 
 
 export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const { game, player } = props
+  const [currentGame, setcurrentGame] = useState(game) // <--- Выведенно в отдельное состояние так как в ответе websocket обновляю game для перерисовки map, а game из props это константа
+  const [message, setMessage] = useState<string>('')
   const { socket } = useSocket();
-  console.log('game', game)
-  console.log('player', player)
-  !game && history.push('/');
 
-  player && localStorage.setItem('player', game?.uuid + '_' + player.symbol)
-
-  function _handlerClick(event: any): void {
-    //let a = +e.getAttribute('data-index')
-    console.log(+event.getAttribute('data-index'))
+  !game && history.push('/') // <-- Защита. Если в ручную вбить адрес /game/play вернет на главную страницу.
+  
+  function _handlerClick(event: number) {
+    let data: MoveRequest;
+    data = {
+      index: event,
+      token: game?.uuid + '_' + player?.symbol
+    }  
+    socket.emit("my-ping", data);
+    socket.on('my-pong', (data: MoveResponse) => {
+      setcurrentGame(data.game)
+      setMessage(data.massage)
+    })
   }
- 
+
+  
+
   return (
   <div className="playing_field">
-    <div className="field" onClick={(e) => _handlerClick(e.target)}>
-      {game?.map.map((e, index)=>{
-        return <Cell key={index} value={e} index={index}/>
+    <div className="field" >
+      {currentGame?.map.map((e, index)=>{
+        return <Cell key={String(index)} value={e} index={index} handlerClick={_handlerClick}/>
       })}
     </div>
+    {message &&
+      <div className="allert">
+        <p>{message}</p>
+      </div>
+    }
   </div>
   )
 }

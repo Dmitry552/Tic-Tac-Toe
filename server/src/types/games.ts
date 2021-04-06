@@ -19,3 +19,13 @@ export enum GameStatus {
   draw = 'draw',
   win = "win"
 }
+
+export interface MoveRequest {
+  index: number;
+  token: string;
+}
+
+export interface MoveResponse {
+  game: Game
+  massage: string,
+}

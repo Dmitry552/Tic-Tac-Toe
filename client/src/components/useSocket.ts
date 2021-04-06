@@ -6,7 +6,7 @@ interface UseSocket {
 }
 
 export const useSocket = (onConnect: Function  = () => undefined, onDisconnected: Function  = () => undefined): UseSocket => {
-  const [socket, setSocket] = useState<SocketIOClient.Socket>()
+  const [socket, setSocket] = useState<SocketIOClient.Socket>();
   let newSocet: SocketIOClient.Socket;
 
   if (!socket) {
@@ -25,7 +25,7 @@ export const useSocket = (onConnect: Function  = () => undefined, onDisconnected
     return  () => {
       socket?.disconnect()
     }
-  });
+  }, []);
   
   return {
       socket: getSocket()

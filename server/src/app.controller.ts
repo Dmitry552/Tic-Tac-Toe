@@ -21,8 +21,8 @@ export class AppController {
   }
   
   @Post('/games/:id')
-  enterTheGame(@Query() {side}: {side: string}, @Param('id') id: string): NewGameResonse {
-    return this.gameService.enterTheGame(id, side);
+  enterTheGame(@Param('id') id: string): NewGameResonse {
+    return this.gameService.enterTheGame(id);
   }
 
   @Post('/game')
