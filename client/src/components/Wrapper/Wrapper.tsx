@@ -20,7 +20,7 @@ export const Wrapper = (): JSX.Element => {
   const [game, setGame] = useState<Game>()
   const [player, setPlayer] = useState<Player>()
   const [token, setToken] = useState(localStorage.getItem('player')?.split('_'));
-  const [message, setMessage] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
   
   function _heandlerEnterTheGame(game: Game): void {
     Http<GameResonse>(`http://localhost:8000/games/${game.uuid}`, 'post').then(resolve => {
@@ -30,10 +30,7 @@ export const Wrapper = (): JSX.Element => {
       history.push('/game/play');
       }).catch(err =>{
         console.log(err)
-        setMessage(true)
-        setTimeout(()=>{
-          setMessage(false)
-        }, 3000)
+        setMessage('Что-то пошло не так! Попробуйте позже')
       });
   } 
 
@@ -45,10 +42,7 @@ export const Wrapper = (): JSX.Element => {
       history.push('/game/play');
     }).catch(err => {
       console.log(err)
-      setMessage(true)
-      setTimeout(()=>{
-        setMessage(false)
-      }, 3000)
+      setMessage('Что-то пошло не так! Попробуйте позже')
     });
   }
   

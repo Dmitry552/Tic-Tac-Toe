@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import Http from '../modulHttp';
 import {Card} from '../Card/Card';
+import {Allert} from '../Allert/Allert';
 import './GamesList.scss';
 import {Game} from '../../types/games';
 import {Props} from './Props.type';
@@ -30,9 +31,7 @@ export const GamesList = (props: Props): JSX.Element => {
           )
         }) : <h1>Извените доступных игр нет</h1>}
       </div>
-      {message ? <div className="allert">
-        <p>Что-то пошло не так! Попробуйте позже</p>
-      </div> : ''}
+      {message && <Allert message={message}/>}
     </div>
   )
 }

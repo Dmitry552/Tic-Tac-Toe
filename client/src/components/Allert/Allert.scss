@@ -1,0 +1,15 @@
+@import '../../utils/variables.scss';
+
+.allert {
+  .allert_message {
+    color: $Allert;
+    padding: 15px 0;
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 30px;
+    text-align: center;
+    border: 1px solid $Allert;
+    border-radius: 6px;
+    box-shadow: 0 0 20px 0px $Allert;
+  }
+}
