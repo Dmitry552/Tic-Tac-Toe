@@ -20,6 +20,7 @@ export const Wrapper = (): JSX.Element => {
   const [game, setGame] = useState<Game>()
   const [player, setPlayer] = useState<Player>()
   const [token, setToken] = useState(localStorage.getItem('player')?.split('_'));
+  const [message, setMessage] = useState<boolean>(false);
   
   function _heandlerEnterTheGame(game: Game): void {
     Http<GameResonse>(`http://localhost:8000/games/${game.uuid}`, 'post').then(resolve => {
@@ -27,6 +28,12 @@ export const Wrapper = (): JSX.Element => {
       setPlayer(resolve.player);
       localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol);
       history.push('/game/play');
+      }).catch(err =>{
+        console.log(err)
+        setMessage(true)
+        setTimeout(()=>{
+          setMessage(false)
+        }, 3000)
       });
   } 
 
@@ -36,15 +43,22 @@ export const Wrapper = (): JSX.Element => {
       setPlayer(resolve.player);
       localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol);
       history.push('/game/play');
+    }).catch(err => {
+      console.log(err)
+      setMessage(true)
+      setTimeout(()=>{
+        setMessage(false)
+      }, 3000)
     });
   }
   
   useEffect(() => {
+    
     if(token) {
       Http<Game>(`http://localhost:8000/games/${token[0]}`).then(resolve => {
         setGame(resolve); 
         setPlayer({
-          symbol: token[1] === 'x' ? PlayerType.X : PlayerType.O
+          symbol: token[1] as PlayerType
         });
         if(firstVisit) {
           history.push('/game/play')
@@ -67,7 +81,7 @@ export const Wrapper = (): JSX.Element => {
             <>
               <Switch>
                 <Route path='/' exact>
-                  <GamesList heandlerNewGame={_heandlerNewGame} heandlerEnterTheGame={_heandlerEnterTheGame}/>
+                  <GamesList heandlerNewGame={_heandlerNewGame} heandlerEnterTheGame={_heandlerEnterTheGame} message={message}/>
                 </Route>
                 <Route path='/game/play'>
                   <PlayingField game={game} player={player}/>

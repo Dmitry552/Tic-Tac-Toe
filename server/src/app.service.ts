@@ -64,7 +64,8 @@ export class GameService {
     }
     
     if(!game.players.o || !game.players.x) {
-      let playerType = game.players.o ? PlayerType.X : PlayerType.O;
+      let playerType = game.players.o ? PlayerType.X : PlayerType.O; // <-- Здесь преобразование типов не спаботает так как game.players.o может быть undefined
+      
       game.players = {
         ...game.players,
         [playerType]: {

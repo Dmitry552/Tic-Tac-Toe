@@ -8,7 +8,7 @@ import {Props} from './Props.type';
  
 export const GamesList = (props: Props): JSX.Element => {
   const [games, setGames] = useState<Game[]>([]);
-  const {heandlerNewGame, heandlerEnterTheGame} = props
+  const {heandlerNewGame, heandlerEnterTheGame, message} = props
   
   useEffect(() => {
     Http<Array<Game>>('http://localhost:8000/games').then(resolve => setGames(resolve));
@@ -30,6 +30,9 @@ export const GamesList = (props: Props): JSX.Element => {
           )
         }) : <h1>Извените доступных игр нет</h1>}
       </div>
+      {message ? <div className="allert">
+        <p>Что-то пошло не так! Попробуйте позже</p>
+      </div> : ''}
     </div>
   )
 }
