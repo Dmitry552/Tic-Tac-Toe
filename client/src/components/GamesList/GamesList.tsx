@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import {useState, useEffect} from 'react';
 import Http from '../modulHttp';
 import {Card} from '../Card/Card';
+import {Allert} from '../Allert/Allert';
 import './GamesList.scss';
 import {Game} from '../../types/games';
 import {Props} from './Props.type';
@@ -9,7 +9,7 @@ import {Props} from './Props.type';
  
 export const GamesList = (props: Props): JSX.Element => {
   const [games, setGames] = useState<Game[]>([]);
-  const {heandlerNewGame, heandlerEnterTheGame} = props
+  const {heandlerNewGame, heandlerEnterTheGame, message} = props
   
   useEffect(() => {
     Http<Array<Game>>('http://localhost:8000/games').then(resolve => setGames(resolve));
@@ -18,9 +18,7 @@ export const GamesList = (props: Props): JSX.Element => {
   return (
     <div className="game_list">
       <div className="button_block">
-        <Link to='/game/play'>
-          <button type='button' onClick={()=>heandlerNewGame()}>Создать новую игру</button>
-        </Link>
+        <button type='button' onClick={()=>heandlerNewGame()}>Создать новую игру</button>
       </div>
       <div className="game-list">
         {games ? games.map(e => {
@@ -33,6 +31,7 @@ export const GamesList = (props: Props): JSX.Element => {
           )
         }) : <h1>Извените доступных игр нет</h1>}
       </div>
+      {message && <Allert message={message} />}
     </div>
   )
 }

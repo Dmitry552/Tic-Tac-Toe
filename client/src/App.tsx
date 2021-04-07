@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wrapper } from './components/Wrapper/Wrapper';
+import {Wrapper} from './components/Wrapper/Wrapper';
 import './style/index.scss';
 
 function App() {

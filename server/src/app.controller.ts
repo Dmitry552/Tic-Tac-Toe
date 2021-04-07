@@ -17,8 +17,12 @@ export class AppController {
 
   @Get('/games/:id')
   getGame(@Param('id') id: string): Game {
-
     return this.gameService.getGame(id);
+  }
+  
+  @Post('/games/:id')
+  enterTheGame(@Param('id') id: string): NewGameResonse {
+    return this.gameService.enterTheGame(id);
   }
 
   @Post('/game')

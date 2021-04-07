@@ -1,37 +1,23 @@
-import React from 'react';
-import {Cross} from '../Cross/Cross';
-import {Zero} from '../Zero/Zero';
+
+import { useSocket } from '../useSocket';
+import {Player, PlayerType} from '../../types/players';
+import {Cell} from '../Cell/Cell';
 import './PlayingField.scss';
 import {PlayingFieldProps} from './PlayingField.type';
+import history from '../history';
 
 
 export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
-  const {game} = props
+  const { game, player } = props
+  const { socket } = useSocket();
+  !game && history.push('/');
 
   return (
   <div className="playing_field">
     <div className="field">
-      <div className="rank rank1">
-        <div className="column column1">
-          <Cross/>
-        </div>
-        <div className="column column2"></div>
-        <div className="column column3"></div>
-      </div>
-      <div className="rank rank2">
-        <div className="column column1"></div>
-        <div className="column column2">
-          <Zero/>
-        </div>
-        <div className="column column3"></div>
-      </div>
-      <div className="rank rank3">
-        <div className="column column1"></div>
-        <div className="column column2"></div>
-        <div className="column column3">
-          <Zero/>
-        </div>
-      </div>
+      {game?.map.map((e, index)=>{
+        return <Cell key={index} value={e}/>
+      })}
     </div>
   </div>
   )

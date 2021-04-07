@@ -9,7 +9,7 @@ export default function Http<T>(url: string, method?: string, body?: BodyInit): 
       if(response.ok) {
         return response.json()
       } else {
-        throw new Error('Something went wrong!')
+        throw new Error('Something went wrong! Try later!')
       }
     });
   }
