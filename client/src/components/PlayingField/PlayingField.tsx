@@ -10,11 +10,7 @@ import history from '../history';
 export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const { game, player } = props
   const { socket } = useSocket();
-  console.log('game', game)
-  console.log('player', player)
   !game && history.push('/');
-  
-  player && localStorage.setItem('player', game?.uuid + '_' + player.symbol)
 
   return (
   <div className="playing_field">
