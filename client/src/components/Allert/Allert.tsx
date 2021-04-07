@@ -2,14 +2,8 @@
 import { useEffect, useState } from 'react';
 import './Allert.scss';
 
-export const Allert = (props: {message: string, colorChange?: string}): JSX.Element => {
+export const Allert = (props: {message: string, colorChange?: 'red' | 'green' | 'yellow'}): JSX.Element => {
   const [shown, setShown] = useState<boolean>(true);
-
-  const style: React.CSSProperties = {
-    color: props.colorChange,
-    border: `1px solid ${props.colorChange}`,
-    boxShadow: `0 0 20px 0px ${props.colorChange}`
-  }
 
   useEffect(()=> {
     setTimeout(()=> {
@@ -23,7 +17,7 @@ export const Allert = (props: {message: string, colorChange?: string}): JSX.Elem
   return (
     <div className="allert">
       {shown && 
-        <div className="allert_message" style = {props.colorChange ? style : undefined}>
+        <div className={`allert_message ${props.colorChange}`}>
           <p>{props.message}</p> 
         </div>
       }

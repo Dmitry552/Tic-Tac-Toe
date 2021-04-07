@@ -22,17 +22,17 @@ export const Wrapper = (): JSX.Element => {
   const [token, setToken] = useState(localStorage.getItem('player')?.split('_'));
   const [message, setMessage] = useState<string>('');
 
-  function prepareToFame(resolve: GameResonse) {
+  function prepareToGame(resolve: GameResonse) {
     setGame(resolve.game);
     setPlayer(resolve.player);
     localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol);
     history.push('/game/play');
   }
-
+ 
   function _heandlerEnterTheGame(game: Game): void {
     setMessage('');  
     Http<GameResonse>(`http://localhost:8000/games/${game.uuid}`, 'post').then(resolve => {
-        prepareToFame(resolve)
+        prepareToGame(resolve)
       }).catch(err =>{
         console.log(err)
         setMessage('Что-то пошло не так! Попробуйте позже')
@@ -42,7 +42,7 @@ export const Wrapper = (): JSX.Element => {
   function _heandlerNewGame(): void {
     setMessage(''); 
     Http<GameResonse>('http://localhost:8000/game', 'post').then(resolve => {
-      prepareToFame(resolve);
+      prepareToGame(resolve);
     }).catch(err => {
       console.log(err)
       setMessage('Что-то пошло не так! Попробуйте позже')

@@ -12,4 +12,19 @@
     border-radius: 6px;
     box-shadow: 0 0 20px 0px $Allert;
   }
+  .allert_message.red {
+    color: $Allert;
+    border: 1px solid $Allert;
+    box-shadow: 0 0 20px 0px $Allert;
+  }
+  .allert_message.green {
+    color: rgb(41, 143, 41);
+    border: 1px solid rgb(41, 143, 41);
+    box-shadow: 0 0 20px 0px rgb(41, 143, 41);
+  }
+  .allert_message.yellow {
+    color: rgb(204, 183, 20);
+    border: 1px solid rgb(204, 183, 20);
+    box-shadow: 0 0 20px 0px rgb(204, 183, 20);
+  }
 }
