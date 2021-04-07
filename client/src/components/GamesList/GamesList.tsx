@@ -31,7 +31,7 @@ export const GamesList = (props: Props): JSX.Element => {
           )
         }) : <h1>Извените доступных игр нет</h1>}
       </div>
-      {message && <Allert message={message}/>}
+      {message && <Allert message={message} />}
     </div>
   )
 }
