@@ -20,22 +20,32 @@ export const Wrapper = (): JSX.Element => {
   const [game, setGame] = useState<Game>()
   const [player, setPlayer] = useState<Player>()
   const [token, setToken] = useState(localStorage.getItem('player')?.split('_'));
-  
+  const [message, setMessage] = useState<string>('');
+
+  function prepareToGame(resolve: GameResonse) {
+    setGame(resolve.game);
+    setPlayer(resolve.player);
+    localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol);
+    history.push('/game/play');
+  }
+ 
   function _heandlerEnterTheGame(game: Game): void {
+    setMessage('');  
     Http<GameResonse>(`http://localhost:8000/games/${game.uuid}`, 'post').then(resolve => {
-        setGame(resolve.game);
-        setPlayer(resolve.player);
-        localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol);
-        history.push('/game/play');
+        prepareToGame(resolve)
+      }).catch(err =>{
+        console.log(err)
+        setMessage('Что-то пошло не так! Попробуйте позже')
       });
   } 
 
   function _heandlerNewGame(): void {
+    setMessage(''); 
     Http<GameResonse>('http://localhost:8000/game', 'post').then(resolve => {
-      setGame(resolve.game); 
-      setPlayer(resolve.player);
-      localStorage.setItem('player', resolve.game.uuid + '_' + resolve.player.symbol);
-      history.push('/game/play');
+      prepareToGame(resolve);
+    }).catch(err => {
+      console.log(err)
+      setMessage('Что-то пошло не так! Попробуйте позже')
     });
   }
   
@@ -44,11 +54,11 @@ export const Wrapper = (): JSX.Element => {
       Http<Game>(`http://localhost:8000/games/${token[0]}`).then(resolve => {
         setGame(resolve); 
         setPlayer({
-          symbol: token[1] === 'x' ? PlayerType.X : PlayerType.O
+          symbol: token[1] as PlayerType
         });
-        if (firstVisit) { // <-- Ключ козволяет вернутся назад по истории браузера на главную страницу
-          history.push('/game/play');
-        }
+        if(firstVisit) {
+          history.push('/game/play')
+        };
         firstVisit = false;
       }).catch(err => {
         localStorage.removeItem('player')
@@ -67,7 +77,7 @@ export const Wrapper = (): JSX.Element => {
             <>
               <Switch>
                 <Route path='/' exact>
-                  <GamesList heandlerNewGame={_heandlerNewGame} heandlerEnterTheGame={_heandlerEnterTheGame}/>
+                  <GamesList heandlerNewGame={_heandlerNewGame} heandlerEnterTheGame={_heandlerEnterTheGame} message={message}/>
                 </Route>
                 <Route path='/game/play' exact>
                   <PlayingField game={game} player={player}/>

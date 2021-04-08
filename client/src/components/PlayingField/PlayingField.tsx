@@ -1,5 +1,6 @@
 
 import { useSocket } from '../useSocket';
+import {Allert} from '../Allert/Allert';
 import {Cell} from '../Cell/Cell';
 import './PlayingField.scss';
 import {PlayingFieldProps, MoveRequest, MoveResponse} from './PlayingField.type';
@@ -16,6 +17,7 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   !game && history.push('/') // <-- Защита. Если в ручную вбить адрес /game/play вернет на главную страницу.
   
   function _handlerClick(event: number) {
+    setMessage('');
     let data: MoveRequest;
     data = {
       index: event,
@@ -37,11 +39,7 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
         return <Cell key={String(index)} value={e} index={index} handlerClick={_handlerClick}/>
       })}
     </div>
-    {message &&
-      <div className="allert">
-        <p>{message}</p>
-      </div>
-    }
+      {message && <Allert message={message} colorChange={"green"}/>}
   </div>
   )
 }
