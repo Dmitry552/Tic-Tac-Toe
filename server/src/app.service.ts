@@ -1,6 +1,6 @@
 import { NewGameResonse } from './types/new-game-resp';
 import { PlayerType } from './types/players';
-import { Game, Games, GameStatus, MoveResponse } from './types/games';
+import { Game, Games, GameStatus, MoveResponse, Color } from './types/games';
 import { Injectable, NotFoundException} from '@nestjs/common';
 import {v4 as uuid} from 'uuid';
 import { GatewayMetadataExplorer } from '@nestjs/websockets/gateway-metadata-explorer';
@@ -86,12 +86,12 @@ export class GameService {
     }
   }
 
-  playingGame(index: number, player: string): MoveResponse {
-    let data: Array<string> = player.split('_');
+  playingGame(index: number, token: string): MoveResponse {
+    let data: Array<string> = token.split('_');
     let Game: Game = this.games[data[0]];
-    let Status: GameStatus = data[1] === 'x' ? GameStatus.playerO : GameStatus.playerX;
+    let Status: GameStatus = (data[1] === 'x') ? GameStatus.playerO : GameStatus.playerX;
     let message: string = '';
-    let color: MoveResponse['color'] = 'red';
+    let color: Color = Color.red;
 
     if(!Game) {
       throw new NotFoundException('Not Found', 'There is no such game')
@@ -104,36 +104,72 @@ export class GameService {
           Game.state = Status
         } else {
           message = 'Ячейка занята!';
-          color = 'red';
+          Status = Game.state
         }
       } else {
         message = 'Сейчас не ваш ход!';
-        color = 'red';
       }
     } else {
       message = 'Игра окончена!';
-      color = 'yellow';
+      color = Color.yellow;
+      Game.state = GameStatus.win;
     }
-    
-    if(Game.map.slice(0, 4).filter((e) => e === data[1]).length === 3 || 
-      Game.map.slice(4, 7).filter((e) => e === data[1]).length === 3 || 
-      Game.map.slice(7).filter((e) => e === data[1]).length === 3 ||
-      [Game.map[0], Game.map[4], Game.map[8]].filter((e) => e === data[1]).length === 3 ||
-      [Game.map[2], Game.map[4], Game.map[6]].filter((e) => e === data[1]).length === 3) {
+
+    const win = [
+      [0,3,6],
+      [1,4,7],
+      [2,5,8]
+    ]
+
+    // let winer;
+    // win.find(w => {
+    //   if(Game.map[w[0]] == Game.map[w[1]] && Game.map[w[1]] == Game.map[w[2]]) {
+    //     winer = Game.map[w[0]];
+    //     return true;
+    //   }
+    // })
+
+    Game.map.filter(v => !v).length == 0
+
+
+    if(Game.state !== GameStatus.win) {
+      if(Game.map.slice(0, 4).filter((e) => e === data[1]).length === 3 || 
+        Game.map.slice(4, 7).filter((e) => e === data[1]).length === 3 || 
+        Game.map.slice(7).filter((e) => e === data[1]).length === 3 ||
+        [Game.map[0], Game.map[4], Game.map[8]].filter((e) => e === data[1]).length === 3 ||
+        [Game.map[2], Game.map[4], Game.map[6]].filter((e) => e === data[1]).length === 3) {
+          Game.state = GameStatus.win;
+          message = `Победа. Выграл ${data[1].toUpperCase()}`;
+          color = Color.green;
+      }
+      win.find(w => {
+        if(Game.map[w[0]] === Game.map[w[1]] && Game.map[w[1]] === Game.map[w[2]]) {
+          Game.state = GameStatus.win;
+          message = `Победа. Выграл ${data[1].toUpperCase()}`;
+          color = Color.green;
+        }
+      });
+      if(Game.map.filter(v => !v).length === 0) {
         Game.state = GameStatus.win;
-        message = 'Победа';
-        color = 'green';
+        message = `Победа. Выграл ${data[1].toUpperCase()}`;
+        color = Color.green;
+      }
+
     }
 
     return {
       game: {
         map: Game.map,
-        state: Status,
+        state: Game.state,
         uuid: Game.uuid,
         players: Game.players
       },
       massage: message,
-      color: color
+      color: color,
+      statusPlayer: Status,
+      player: { 
+        symbol: data[1]
+      }
     }
   }
 }

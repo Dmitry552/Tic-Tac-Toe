@@ -1,4 +1,4 @@
-import { PlayerType, Players } from './players';
+import { PlayerType, Players, Player } from './players';
 
 export interface Games {
   [uuid: string]: Game;
@@ -28,5 +28,16 @@ export interface MoveRequest {
 export interface MoveResponse {
   game: Game
   massage: string
-  color: 'red' | 'green' | 'yellow'
+  color: Color
+  statusPlayer: GameStatus
+  player: {
+    symbol: string,
+  }
+}
+
+export enum Color {
+  red = 'red',
+  green = 'green',
+  yellow = 'yellow'
+
 }

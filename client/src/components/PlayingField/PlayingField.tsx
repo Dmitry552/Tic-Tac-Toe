@@ -3,19 +3,48 @@ import { useSocket } from '../useSocket';
 import {Allert} from '../Allert/Allert';
 import {Cell} from '../Cell/Cell';
 import './PlayingField.scss';
-import {PlayingFieldProps, MoveRequest, MoveResponse} from './PlayingField.type';
+import {PlayingFieldProps, MoveRequest, MoveResponse, Color} from './PlayingField.type';
 import history from '../history';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import {Game, GameStatus} from '../../types/games';
+import {PlayerType, Player} from '../../types/players';
+import {Cross} from '../Cross/Cross';
+import {Zero} from '../Zero/Zero';
+
 
 
 export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const { game, player } = props
-  const [currentGame, setcurrentGame] = useState(game) // <--- Выведенно в отдельное состояние так как в ответе websocket обновляю game для перерисовки map, а game из props это константа
+
+  const [currentGame, setcurrentGame] = useState<Game | undefined>(game)
   const [message, setMessage] = useState<string>('')
-  const [colorAllert, setColorAllert] = useState<MoveResponse["color"]>('red');
+  const [colorAllert, setColorAllert] = useState<Color>(Color.red);
+  const [runningState, setRunningState] = useState<GameStatus | undefined>();
+  const [playerGame, setPlayerGame] = useState<Player | undefined>(player);
+
   const { socket } = useSocket();
 
-  !game && history.push('/') // <-- Защита. Если в ручную вбить адрес /game/play вернет на главную страницу.
+  !game && history.push('/') 
+
+  
+  function handleGameUpdate(data: MoveResponse) {
+    console.log(data)
+    if (game?.uuid === data.game.uuid) {
+      setcurrentGame(data.game)
+      setMessage(data.massage)
+      setColorAllert(data.color)
+      setPlayerGame(data.player) 
+      setRunningState(data.statusPlayer)
+    }
+  }
+
+  useEffect(()=>{
+    socket.on('game_move', handleGameUpdate)
+    
+    return () => {
+      socket.off('game_move', handleGameUpdate)
+    }
+  }, [])
   
   function _handlerClick(event: number) {
     setMessage('');
@@ -25,23 +54,29 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
       token: game?.uuid + '_' + player?.symbol
     }  
     socket.emit("player_turn", data);
-    socket.on('retaliatory_move', (data: MoveResponse) => {
-      setcurrentGame(data.game)
-      setMessage(data.massage)
-      setColorAllert(data.color)
-    })
+    console.log('message', message)
+    console.log('playerGame', playerGame) 
+    console.log('player', player)
+    console.log('currentGame', currentGame)
   }
 
   
 
   return (
   <div className="playing_field">
+    <div className="player">
+      {player?.symbol === PlayerType.O ? <Zero/> : <Cross/>}
+    </div>
+    <div className="move">
+      <p>Ходит: {runningState?.split('_')[1].toUpperCase()}</p>
+    </div>
     <div className="field" >
       {currentGame?.map.map((e, index)=>{
         return <Cell key={String(index)} value={e} index={index} handlerClick={_handlerClick}/>
       })}
     </div>
-      {message && <Allert message={message} colorChange={colorAllert}/>}
+      {(currentGame?.state === 'win' || (message && playerGame?.symbol === player?.symbol)) && <Allert message={message} colorChange={colorAllert}/>}
+      
   </div>
   )
 }

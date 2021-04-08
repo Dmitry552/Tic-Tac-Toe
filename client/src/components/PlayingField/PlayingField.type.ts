@@ -14,5 +14,14 @@ export type MoveRequest = {
 export type MoveResponse = {
   game: Game
   massage: string
-  color: 'red' | 'green' | 'yellow'
+  color: Color
+  statusPlayer: GameStatus
+  player: Player
+}
+
+export enum Color {
+  red = 'red',
+  green = 'green',
+  yellow = 'yellow'
+
 }
