@@ -12,6 +12,7 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const { game, player } = props
   const [currentGame, setcurrentGame] = useState(game) // <--- Выведенно в отдельное состояние так как в ответе websocket обновляю game для перерисовки map, а game из props это константа
   const [message, setMessage] = useState<string>('')
+  const [colorAllert, setColorAllert] = useState<MoveResponse["color"]>('red');
   const { socket } = useSocket();
 
   !game && history.push('/') // <-- Защита. Если в ручную вбить адрес /game/play вернет на главную страницу.
@@ -23,10 +24,11 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
       index: event,
       token: game?.uuid + '_' + player?.symbol
     }  
-    socket.emit("my-ping", data);
-    socket.on('my-pong', (data: MoveResponse) => {
+    socket.emit("player_turn", data);
+    socket.on('retaliatory_move', (data: MoveResponse) => {
       setcurrentGame(data.game)
       setMessage(data.massage)
+      setColorAllert(data.color)
     })
   }
 
@@ -39,7 +41,7 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
         return <Cell key={String(index)} value={e} index={index} handlerClick={_handlerClick}/>
       })}
     </div>
-      {message && <Allert message={message} colorChange={"green"}/>}
+      {message && <Allert message={message} colorChange={colorAllert}/>}
   </div>
   )
 }

@@ -27,5 +27,6 @@ export interface MoveRequest {
 
 export interface MoveResponse {
   game: Game
-  massage: string,
+  massage: string
+  color: 'red' | 'green' | 'yellow'
 }

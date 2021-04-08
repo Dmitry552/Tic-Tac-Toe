@@ -12,10 +12,10 @@ export class AppGateway {
    @WebSocketServer()
    server: Server
 
-  @SubscribeMessage('my-ping')
+  @SubscribeMessage('player_turn')
   playingGame(client: Socket, data: MoveRequest): void {
     const result = this.gameService.playingGame(data.index, data.token);
-    this.server.emit('my-pong', result);
+    this.server.emit('retaliatory_move', result);
   }
 
   

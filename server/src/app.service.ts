@@ -91,6 +91,7 @@ export class GameService {
     let Game: Game = this.games[data[0]];
     let Status: GameStatus = data[1] === 'x' ? GameStatus.playerO : GameStatus.playerX;
     let message: string = '';
+    let color: MoveResponse['color'] = 'red';
 
     if(!Game) {
       throw new NotFoundException('Not Found', 'There is no such game')
@@ -103,12 +104,15 @@ export class GameService {
           Game.state = Status
         } else {
           message = 'Ячейка занята!';
+          color = 'red';
         }
       } else {
         message = 'Сейчас не ваш ход!';
+        color = 'red';
       }
     } else {
       message = 'Игра окончена!';
+      color = 'yellow';
     }
     
     if(Game.map.slice(0, 4).filter((e) => e === data[1]).length === 3 || 
@@ -118,6 +122,7 @@ export class GameService {
       [Game.map[2], Game.map[4], Game.map[6]].filter((e) => e === data[1]).length === 3) {
         Game.state = GameStatus.win;
         message = 'Победа';
+        color = 'green';
     }
 
     return {
@@ -127,7 +132,8 @@ export class GameService {
         uuid: Game.uuid,
         players: Game.players
       },
-      massage: message
+      massage: message,
+      color: color
     }
   }
 }

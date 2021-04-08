@@ -13,5 +13,6 @@ export type MoveRequest = {
 
 export type MoveResponse = {
   game: Game
-  massage: string,
+  massage: string
+  color: 'red' | 'green' | 'yellow'
 }
