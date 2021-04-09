@@ -27,7 +27,7 @@ export const GamesList = (props: Props): JSX.Element => {
               heandlerEnterTheGame = {heandlerEnterTheGame}
               game = {e}
               key = {e.uuid}
-          />
+            />
           )
         }) : <h1>Извените доступных игр нет</h1>}
       </div>

@@ -1,4 +1,4 @@
-import { PlayerType, Players } from './players';
+import { PlayerType, Players, Player } from './players';
 
 export interface Games {
   [uuid: string]: Game;
@@ -18,4 +18,20 @@ export enum GameStatus {
   playerO = 'player_o',
   draw = 'draw',
   win = "win"
+}
+
+export interface MoveRequest {
+  index: number;
+  token: string;
+}
+
+export interface MoveResponse {
+  game: Game
+}
+
+export enum Color {
+  red = 'red',
+  green = 'green',
+  yellow = 'yellow'
+
 }

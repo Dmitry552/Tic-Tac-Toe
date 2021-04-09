@@ -3,7 +3,21 @@
 .playing_field {
   max-width: 250px;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 25px;
+  .player {
+    position: relative;
+    text-align: center;
+    padding-bottom: 70px;
+    .player_icon {
+      position: absolute;
+      left: 94px;
+      top: 20px;
+    }
+  }
+  .move {
+    text-align: center;
+    margin-bottom: 20px;
+  }
   .field {
     display: flex;
     justify-content: center;

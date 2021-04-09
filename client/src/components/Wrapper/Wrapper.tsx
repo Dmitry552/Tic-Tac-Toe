@@ -50,7 +50,6 @@ export const Wrapper = (): JSX.Element => {
   }
   
   useEffect(() => {
-    
     if(token) {
       Http<Game>(`http://localhost:8000/games/${token[0]}`).then(resolve => {
         setGame(resolve); 
@@ -80,7 +79,7 @@ export const Wrapper = (): JSX.Element => {
                 <Route path='/' exact>
                   <GamesList heandlerNewGame={_heandlerNewGame} heandlerEnterTheGame={_heandlerEnterTheGame} message={message}/>
                 </Route>
-                <Route path='/game/play'>
+                <Route path='/game/play' exact>
                   <PlayingField game={game} player={player}/>
                 </Route>
                 <Route path='*'>
