@@ -28,7 +28,6 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
 
   
   function handleGameUpdate(data: MoveResponse) {
-    console.log(data)
     if (game?.uuid === data.game.uuid) {
       setcurrentGame(data.game)
       setMessage(data.massage)
@@ -54,18 +53,15 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
       token: game?.uuid + '_' + player?.symbol
     }  
     socket.emit("player_turn", data);
-    console.log('message', message)
-    console.log('playerGame', playerGame) 
-    console.log('player', player)
-    console.log('currentGame', currentGame)
   }
-
   
-
   return (
   <div className="playing_field">
     <div className="player">
-      {player?.symbol === PlayerType.O ? <Zero/> : <Cross/>}
+      <p>Вы играете за</p>
+      <div className="player_icon">
+        {player?.symbol === PlayerType.O ? <Zero/> : <Cross/>}
+      </div>
     </div>
     <div className="move">
       <p>Ходит: {runningState?.split('_')[1].toUpperCase()}</p>

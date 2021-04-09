@@ -3,12 +3,16 @@
 .playing_field {
   max-width: 250px;
   margin: 0 auto;
-  margin-top: 100px;
-  position: relative;
+  margin-top: 25px;
   .player {
-    position: absolute;
-    left: 94px;
-    top: -84px;
+    position: relative;
+    text-align: center;
+    padding-bottom: 70px;
+    .player_icon {
+      position: absolute;
+      left: 94px;
+      top: 20px;
+    }
   }
   .move {
     text-align: center;

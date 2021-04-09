@@ -3,7 +3,6 @@ import { PlayerType } from './types/players';
 import { Game, Games, GameStatus, MoveResponse, Color } from './types/games';
 import { Injectable, NotFoundException} from '@nestjs/common';
 import {v4 as uuid} from 'uuid';
-import { GatewayMetadataExplorer } from '@nestjs/websockets/gateway-metadata-explorer';
 
 
 @Injectable()
@@ -121,17 +120,6 @@ export class GameService {
       [2,5,8]
     ]
 
-    // let winer;
-    // win.find(w => {
-    //   if(Game.map[w[0]] == Game.map[w[1]] && Game.map[w[1]] == Game.map[w[2]]) {
-    //     winer = Game.map[w[0]];
-    //     return true;
-    //   }
-    // })
-
-    Game.map.filter(v => !v).length == 0
-
-
     if(Game.state !== GameStatus.win) {
       if(Game.map.slice(0, 4).filter((e) => e === data[1]).length === 3 || 
         Game.map.slice(4, 7).filter((e) => e === data[1]).length === 3 || 
@@ -142,19 +130,25 @@ export class GameService {
           message = `Победа. Выграл ${data[1].toUpperCase()}`;
           color = Color.green;
       }
+      
+      let winer;
       win.find(w => {
         if(Game.map[w[0]] === Game.map[w[1]] && Game.map[w[1]] === Game.map[w[2]]) {
-          Game.state = GameStatus.win;
-          message = `Победа. Выграл ${data[1].toUpperCase()}`;
-          color = Color.green;
+          winer = Game.map[w[0]];
+          return true;
         }
       });
-      if(Game.map.filter(v => !v).length === 0) {
+      if(winer) {
         Game.state = GameStatus.win;
-        message = `Победа. Выграл ${data[1].toUpperCase()}`;
+        message = `Победа. Выграл ${winer.toUpperCase()}`;
         color = Color.green;
       }
 
+      if(Game.map.filter(v => !v).length === 0) {
+        Game.state = GameStatus.win;
+        message = `Ничья`;
+        color = Color.yellow;
+      }
     }
 
     return {

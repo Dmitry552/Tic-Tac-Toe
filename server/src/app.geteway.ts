@@ -1,5 +1,4 @@
-import { WebSocketGateway, WebSocketServer, SubscribeMessage,
-          OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect, MessageBody, WsResponse } from "@nestjs/websockets";
+import { WebSocketGateway, WebSocketServer, SubscribeMessage } from "@nestjs/websockets";
 import { Socket, Server } from "socket.io";
 import { GameService } from './app.service';
 
