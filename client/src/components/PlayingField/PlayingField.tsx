@@ -3,7 +3,7 @@ import { useSocket } from '../useSocket';
 import {Allert} from '../Allert/Allert';
 import {Cell} from '../Cell/Cell';
 import './PlayingField.scss';
-import {PlayingFieldProps, MoveRequest, MoveResponse, Color} from './PlayingField.type';
+import {PlayingFieldProps, MoveRequest, Color} from './PlayingField.type';
 import history from '../history';
 import { useEffect, useState } from 'react';
 import {Game, GameStatus} from '../../types/games';
@@ -19,34 +19,56 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
   const [currentGame, setcurrentGame] = useState<Game | undefined>(game)
   const [message, setMessage] = useState<string>('')
   const [colorAllert, setColorAllert] = useState<Color>(Color.red);
-  const [runningState, setRunningState] = useState<GameStatus | undefined>();
-  const [playerGame, setPlayerGame] = useState<Player | undefined>(player);
+  const [runningState, setRunningState] = useState<PlayerType | undefined>();
 
   const { socket } = useSocket();
 
   !game && history.push('/') 
 
   
-  function handleGameUpdate(data: MoveResponse) {
-    if (game?.uuid === data.game.uuid) {
-      setcurrentGame(data.game)
-      setMessage(data.massage)
-      setColorAllert(data.color)
-      setPlayerGame(data.player) 
-      setRunningState(data.statusPlayer)
+  function handleGameUpdate(data: Game) {
+    if (game?.uuid === data.uuid) {
+      setcurrentGame(data)
     }
   }
 
   useEffect(()=>{
     socket.on('game_move', handleGameUpdate)
-    
     return () => {
       socket.off('game_move', handleGameUpdate)
     }
   }, [])
   
+  useEffect(() => {
+    if(currentGame?.state === GameStatus.playerX) {
+        setRunningState(PlayerType.X)
+      } else if(currentGame?.state === GameStatus.playerO) {
+        setRunningState(PlayerType.O)
+      }
+      Message()
+  }, [currentGame])
+
+  function Message(): void {
+    if(runningState && player?.symbol !== runningState){
+      setMessage('Сейчас не ваш ход!')
+    }
+    if(currentGame?.state === GameStatus.win) {
+      setMessage(`Победа игрока ${runningState?.toUpperCase()}`);
+      setColorAllert(Color.green);
+    }
+    if(currentGame?.state === GameStatus.draw) {
+      setMessage('Ничья');
+      setColorAllert(Color.yellow);
+    }
+  }
+
+  
   function _handlerClick(event: number) {
     setMessage('');
+    if(currentGame?.map[event]) {
+      setMessage('Ячейка занята!');
+      return
+    }
     let data: MoveRequest;
     data = {
       index: event,
@@ -64,14 +86,16 @@ export const PlayingField = (props: PlayingFieldProps): JSX.Element => {
       </div>
     </div>
     <div className="move">
-      <p>Ходит: {runningState?.split('_')[1].toUpperCase()}</p>
+      <p>Ходит: {runningState?.toUpperCase()}</p>
     </div>
     <div className="field" >
       {currentGame?.map.map((e, index)=>{
         return <Cell key={String(index)} value={e} index={index} handlerClick={_handlerClick}/>
       })}
     </div>
-      {(currentGame?.state === 'win' || (message && playerGame?.symbol === player?.symbol)) && <Allert message={message} colorChange={colorAllert}/>}
+      {(currentGame?.state === 'win' || 
+      currentGame?.state === 'draw' || 
+      (message && (runningState && player?.symbol !== runningState))) && <Allert message={message} colorChange={colorAllert}/>}
       
   </div>
   )

@@ -11,14 +11,6 @@ export type MoveRequest = {
   token: string,
 }
 
-export type MoveResponse = {
-  game: Game
-  massage: string
-  color: Color
-  statusPlayer: GameStatus
-  player: Player
-}
-
 export enum Color {
   red = 'red',
   green = 'green',

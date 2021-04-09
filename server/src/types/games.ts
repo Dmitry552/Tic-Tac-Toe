@@ -27,12 +27,6 @@ export interface MoveRequest {
 
 export interface MoveResponse {
   game: Game
-  massage: string
-  color: Color
-  statusPlayer: GameStatus
-  player: {
-    symbol: string,
-  }
 }
 
 export enum Color {
